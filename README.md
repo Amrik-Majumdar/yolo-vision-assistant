@@ -72,6 +72,12 @@ python download_model.py
 python export_web_model.py
 ```
 
+## Legal and Safety Notes
+
+- [Disclaimer](DISCLAIMER.md): this project is experimental and not for safety-critical use.
+- [Privacy Notes](PRIVACY.md): do not publish private images, videos, or camera captures.
+- [Security Policy](SECURITY.md): report exposed credentials, unsafe media handling, or backend concerns privately.
+
 ## Limitations
 
 - Detection quality depends on the model, camera/image quality, lighting, and runtime environment.
