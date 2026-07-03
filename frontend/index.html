@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Assistant - Object Detector</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>🔍 Vision Assistant</h1>
+      <p class="subtitle">Real-time Object Detection with Enhanced Recognition</p>
+    </header>
+
+    <section class="camera-section">
+      <div class="video-wrapper">
+        <video id="webcam" autoplay playsinline muted></video>
+        <canvas id="canvas"></canvas>
+      </div>
+      
+      <div class="controls">
+        <button id="detectBtn" class="big-button" disabled>
+          <span class="icon">📷</span>
+          <span class="text">Loading...</span>
+        </button>
+        
+        <div class="toggles">
+          <label class="toggle">
+            <input type="checkbox" id="voiceToggle" checked>
+            <span class="slider"></span>
+            <span class="label-text">🔊 Voice</span>
+          </label>
+          
+          <label class="toggle">
+            <input type="checkbox" id="continuousToggle">
+            <span class="slider"></span>
+            <span class="label-text">🔄 Continuous</span>
+          </label>
+          
+          <label class="toggle">
+            <input type="checkbox" id="detailedMode" checked>
+            <span class="slider"></span>
+            <span class="label-text">🔬 Detailed ID</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="status-bar" id="statusBar">Starting up...</div>
+      
+      <div class="results-area" id="resultsArea"></div>
+      
+      <div class="stats-panel" id="statsPanel" style="display: none;">
+        <h3>Detection Stats</h3>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">👥 People:</span>
+            <span class="stat-value" id="peopleCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">📦 Objects:</span>
+            <span class="stat-value" id="objectsCount">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">⏱️ Speed:</span>
+            <span class="stat-value" id="speedTime">0ms</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <details class="settings">
+      <summary>⚙️ Settings</summary>
+      <div class="settings-content">
+        <div class="setting">
+          <label>
+            Confidence: <span id="confValue">10%</span>
+          </label>
+          <input type="range" id="confSlider" min="5" max="50" value="10" step="5">
+          <small style="color: #6b7280; margin-top: 5px;">Lower = more detections (may include false positives)</small>
+        </div>
+        
+        <div class="setting">
+          <label>
+            Speech Speed: <span id="speedValue">1.0x</span>
+          </label>
+          <input type="range" id="speedSlider" min="0.5" max="2.0" value="1.0" step="0.1">
+        </div>
+
+        <div class="buttons">
+          <button id="viewLogsBtn" class="small-btn">📋 View Logs</button>
+          <button id="viewStatsBtn" class="small-btn">📊 Statistics</button>
+          <button id="clearLogsBtn" class="small-btn danger">🗑️ Clear Logs</button>
+        </div>
+      </div>
+    </details>
+
+    <footer>
+      <p class="help-text">
+        <kbd>Space</kbd> to detect • <kbd>Ctrl+Space</kbd> for continuous mode
+      </p>
+      <small>🔒 Your video stays on your device. Enhanced detection with 1000+ object types.</small>
+    </footer>
+  </main>
+  
+  <div id="srLive" class="sr-only" aria-live="polite"></div>
+  
+  <!-- ONNX Runtime for YOLO -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.2/dist/ort.min.js"></script>
+  
+  <!-- TensorFlow + MobileNet for detailed classification -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
+  
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof ort !== 'undefined') {
+        console.log('ONNX Runtime loaded:', ort.env.versions);
+        ort.env.wasm.numThreads = 1;
+        ort.env.wasm.simd = true;
+        ort.env.wasm.proxy = false;
+        console.log('ONNX configured');
+      } else {
+        console.error('ONNX Runtime failed to load');
+      }
+      
+      if (typeof tf !== 'undefined') {
+        console.log('TensorFlow loaded:', tf.version.tfjs);
+      } else {
+        console.error('TensorFlow failed to load');
+      }
+    });
+  </script>
+  
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+try {
+    console.log("Loading YOLOv8 ONNX model...");
+    session = await ort.InferenceSession.create("/models/yolov8n.onnx");
+    console.log("✓ YOLOv8 ONNX model loaded successfully");
+    console.log("Input names:", session.inputNames);
+    console.log("Output names:", session.outputNames);
+    return true;
+  } catch (error) {
+    console.error("Failed to load YOLO model:", error);
+    throw new Error(`Model loading failed: ${error.message}`);
+  }
+}
+=======
+export async function checkModelAccessibility(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    if (!response.ok) {
+      throw new Error(`Model file not accessible, status: ${response.status}`);
+    }
+    console.log(`Model file ${url} is accessible.`);
+    return true;
+  } catch (error) {
+    console.error("Model accessibility check failed:", error);
+    return false;
+  }
+}
+
+export async function initYoloModel() {
+  const modelUrl = "/models/yolov8n.onnx";
+
+  const accessible = await checkModelAccessibility(modelUrl);
+  if (!accessible) {
+    throw new Error("Model file '/models/yolov8n.onnx' is not accessible from the server.");
+  }
+
+  try {
+    console.log("Loading YOLOv8 ONNX model...");
+    session = await ort.InferenceSession.create(modelUrl);
+    console.log("✓ YOLOv8 ONNX model loaded successfully");
+    console.log("Input names:", session.inputNames);
+    console.log("Output names:", session.outputNames);
+    return true;
+  } catch (error) {
+    console.error("Failed to load YOLO model:", error);
+    let message = "";
+    if (error && error.message) {
+      message = error.message;
+    } else if (typeof error === "string") {
+      message = error;
+    } else {
+      message = "Unknown error during model loading";
+    }
+    throw new Error(`Model loading failed: ${message}`);
+  }
+}
