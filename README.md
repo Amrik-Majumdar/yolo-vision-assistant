@@ -1,50 +1,88 @@
-# YOLO Vision Object Detection
+# YOLO Vision Assistant
 
-## Overview
+YOLO Vision Assistant is a browser-based computer vision project for experimenting with object detection and visual analysis. The repository combines a frontend interface, a small Node.js backend, Python model utilities, and local model files for YOLO-style detection workflows.
 
-This project demonstrates object detection using a YOLO-based computer vision workflow. It focuses on detecting objects from visual input and presenting results through a usable application interface.
+The project is organized as an experimental assistant rather than a production accessibility or robotics tool.
 
-## Features
+## What This Project Shows
 
-- Object detection using a YOLO-style model workflow
-- Browser or application interface for interacting with visual input
-- Organized source files for frontend and detection logic
-- Potential use as a foundation for accessibility, robotics, or real-time vision tools
-
-## Technical Approach
-
-The project combines frontend interaction with computer vision inference. Visual input is processed through an object detection model, and the detected objects are returned in a format that can be displayed or used by the application.
+- Browser interface for visual input and detection output
+- JavaScript modules for classification, detection, tracking, and voice support
+- Node.js backend route for explanation-style responses
+- Python utilities for downloading and exporting model assets
+- Local YOLO/ONNX model workflow
+- Clear boundaries around model limitations and runtime assumptions
 
 ## Repository Structure
 
-- `README.md` project documentation
-- `src/` application source code, if present
-- `public/` static assets, if present
-- `package.json` project scripts and dependencies, if present
+```text
+.
+├── frontend/
+│   ├── index.html
+│   ├── app.js
+│   ├── styles.css
+│   └── js/                  Detection, tracking, classifier, and voice modules
+├── backend/
+│   ├── server.js            Express server
+│   └── routes/              Backend routes
+├── models/                  Local model assets
+├── download_model.py        Model download helper
+├── export_web_model.py      Model export helper
+├── setup.ps1                Windows setup script
+├── start.ps1                Windows start script
+└── README.md
+```
 
-## Setup
+## Technical Approach
 
-- Clone the repository
-- Install dependencies with `npm install` if this is a Node-based project
-- Create local environment variables if needed
-- Start the development server with the project script listed in `package.json`
+The project separates visual interaction from backend support. Frontend modules handle browser-side input, detection display, tracking behavior, and user-facing interaction. The backend provides a lightweight service layer for routes that should not live directly in the browser.
 
-## Usage
+The model utilities support a local workflow for working with YOLO-style assets and ONNX export. This makes the repository useful for studying the path from model file to browser-facing interface.
 
-- Run the application locally
-- Provide visual input through the supported interface
-- Review detected objects and application output
-- Modify source code in `src/` for experiments or improvements
+## Local Setup
+
+From the repository root:
+
+```powershell
+.\\setup.ps1
+```
+
+Then start the project:
+
+```powershell
+.\\start.ps1
+```
+
+Backend-only setup:
+
+```powershell
+cd backend
+npm install
+npm start
+```
+
+## Model Files
+
+The repository includes model assets for local experimentation. If model files are replaced or regenerated, keep large generated artifacts intentional and documented.
+
+Useful helpers:
+
+```powershell
+python download_model.py
+python export_web_model.py
+```
 
 ## Limitations
 
-- Detection quality depends on the model and input conditions
-- The public version may not include private model files or deployment credentials
-- Performance may vary by browser, hardware, and model configuration
+- Detection quality depends on the model, camera/image quality, lighting, and runtime environment.
+- The project is not validated for safety-critical use.
+- Browser performance can vary by device and model format.
+- The backend route structure is small and should be reviewed before adding external services.
 
 ## Future Improvements
 
-- Add clearer setup instructions for model files
-- Add screenshots or a short demo
-- Improve error handling for unsupported inputs
-- Add tests or validation examples
+- Add screenshots or a short demo flow.
+- Add a sample image set for repeatable testing.
+- Document expected backend environment variables if external model explanation is enabled.
+- Add tests around detection decoding and frontend state behavior.
+- Provide a smaller model-download path for lighter clones.
